@@ -76,6 +76,25 @@ public class Logica {
 
 	public static void main(String[] args) {
 
-		System.out.println(andBinario("11111101", "11101101"));
+		System.out.println(decimalAHexadecimal(11));
 	}
+
+	/**
+	 * Permite convertir un numero decimal a hexadecimal
+	 * 
+	 * @param decimal numero decimal a convertir
+	 * @return numero hexadecimal (String)
+	 */
+	public static String decimalAHexadecimal(int decimal) {
+		String hexa = "";
+		String caracteresHexa = "0123456789abcdef";
+		while (decimal > 0) {
+			int residuo = decimal % 16;
+			hexa = caracteresHexa.charAt(residuo) + hexa; // Agregar a la izquierda
+			decimal /= 16;
+		}
+		return hexa;
+	}
+	
+	
 }
