@@ -101,6 +101,7 @@ public class Logica {
 	 * @return Mascara en binario
 	 */
 	public static String convertirMascaraBinario(String mascara) {
+		mascara = mascara.substring(1, mascara.length());
 		int mascaraIp = Integer.parseInt(mascara);
 		StringBuilder binario = new StringBuilder();
 
@@ -120,7 +121,7 @@ public class Logica {
 	public static void main(String[] args) {
 
 		String ip = "192.168.12.1";
-		String mascara = "24";
+		String mascara = "/24";
 
 		String IpBinario = calcularIPBinario(ip);
 		String mascaraBinario = convertirMascaraBinario(mascara);
