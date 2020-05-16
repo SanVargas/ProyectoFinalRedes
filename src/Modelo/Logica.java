@@ -2,7 +2,10 @@ package Modelo;
 
 public class Logica {
 
-	private String[] ip;
+	//Direccion IP
+	private String ip;
+	
+	//Mascara de la direccion IP
 	private String mascara;
 
 	/**
@@ -74,11 +77,6 @@ public class Logica {
 		return resul;
 	}
 
-	public static void main(String[] args) {
-
-		System.out.println(decimalAHexadecimal(11));
-	}
-
 	/**
 	 * Permite convertir un numero decimal a hexadecimal
 	 * 
@@ -95,6 +93,40 @@ public class Logica {
 		}
 		return hexa;
 	}
-	
-	
+
+	/**
+	 * Metodo para convertir la mascara de decimal a binario
+	 * 
+	 * @param mascara Mascara en decimal
+	 * @return Mascara en binario
+	 */
+	public static String convertirMascaraBinario(String mascara) {
+		int mascaraIp = Integer.parseInt(mascara);
+		StringBuilder binario = new StringBuilder();
+
+		if (binario.length() != mascaraIp) {
+			while (binario.length() != mascaraIp) {
+				binario.insert(0, "1");
+			}
+		}
+		if (binario.length() != 32) {
+			while (binario.length() != 32) {
+				binario.insert(binario.length(), "0");
+			}
+		}
+		return binario.toString();
+	}
+
+	public static void main(String[] args) {
+
+		String ip = "192.168.12.1";
+		String mascara = "24";
+
+		String IpBinario = calcularIPBinario(ip);
+		String mascaraBinario = convertirMascaraBinario(mascara);
+
+		System.out.println(IpBinario);
+		System.out.println(mascaraBinario);
+		System.out.println(decimalAHexadecimal(11));
+	}
 }
