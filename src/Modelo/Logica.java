@@ -2,7 +2,10 @@ package Modelo;
 
 public class Logica {
 
-	private String[] ip;
+	// Direccion IP
+	private String ip;
+
+	// Mascara de la direccion IP
 	private String mascara;
 
 	/**
@@ -66,17 +69,11 @@ public class Logica {
 			for (int i = 0; i < n1.length(); i++) {
 				if (n1.charAt(i) == '1' && n2.charAt(i) == '1') {
 					resul += "1";
-				} else if (n1.charAt(i) == '1' && n2.charAt(i) == '0' || n1.charAt(i) == '0' && n2.charAt(i) == '1'
-						|| n1.charAt(i) == '0' && n2.charAt(i) == '0')
+				} else
 					resul += "0";
 			}
 		}
 		return resul;
-	}
-
-	public static void main(String[] args) {
-
-		System.out.println(decimalAHexadecimal(11));
 	}
 
 	/**
@@ -95,6 +92,54 @@ public class Logica {
 		}
 		return hexa;
 	}
-	
-	
+
+	/**
+	 * Metodo para convertir la mascara de decimal a binario
+	 * 
+	 * @param mascara Mascara en decimal
+	 * @return Mascara en binario
+	 */
+	public static String convertirMascaraBinario(String mascara) {
+		mascara = mascara.substring(1, mascara.length());
+		int mascaraIp = Integer.parseInt(mascara);
+		StringBuilder binario = new StringBuilder();
+
+		if (binario.length() != mascaraIp) {
+			while (binario.length() != mascaraIp) {
+				binario.insert(0, "1");
+			}
+		}
+		if (binario.length() != 32) {
+			while (binario.length() != 32) {
+				binario.insert(binario.length(), "0");
+			}
+		}
+		return binario.toString();
+	}
+
+	/**
+	 * Permite convertir un numero hexadecimal a binario
+	 * 
+	 * @param hexa numero exadecimal
+	 * @return numero binario
+	 */
+	public static String convertirHexaABinario(String hexa) {
+		int numHex = Integer.parseInt(hexa, 16);
+		String binario = Integer.toBinaryString(numHex);
+		return binario;
+	}
+
+	public static void main(String[] args) {
+
+//		String ip = "192.168.12.1";
+//		String mascara = "/24";
+//
+//		String IpBinario = calcularIPBinario(ip);
+//		String mascaraBinario = convertirMascaraBinario(mascara);
+//
+//		System.out.println(IpBinario);
+//		System.out.println(mascaraBinario);
+//		System.out.println(decimalAHexadecimal(11));
+		System.out.println(convertirHexaABinario("12bc"));
+	}
 }
