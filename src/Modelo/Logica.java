@@ -35,6 +35,7 @@ public class Logica {
 				binario += convertirDecimalABinarioManual(ipArray[i]) + ".";
 			}
 		}
+		binario = binario.substring(0, binario.length() - 1);
 		return binario;
 	}
 	
