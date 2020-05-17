@@ -2,10 +2,10 @@ package Modelo;
 
 public class Logica {
 
-	//Direccion IP
+	// Direccion IP
 	private String ip;
-	
-	//Mascara de la direccion IP
+
+	// Mascara de la direccion IP
 	private String mascara;
 
 	/**
@@ -69,8 +69,7 @@ public class Logica {
 			for (int i = 0; i < n1.length(); i++) {
 				if (n1.charAt(i) == '1' && n2.charAt(i) == '1') {
 					resul += "1";
-				} else if (n1.charAt(i) == '1' && n2.charAt(i) == '0' || n1.charAt(i) == '0' && n2.charAt(i) == '1'
-						|| n1.charAt(i) == '0' && n2.charAt(i) == '0')
+				} else
 					resul += "0";
 			}
 		}
@@ -118,16 +117,29 @@ public class Logica {
 		return binario.toString();
 	}
 
+	/**
+	 * Permite convertir un numero hexadecimal a binario
+	 * 
+	 * @param hexa numero hexadecimal
+	 * @return numero binario
+	 */
+	public static String convertirHexaABinario(String hexa) {
+		int numHex = Integer.parseInt(hexa, 16);
+		String binario = Integer.toBinaryString(numHex);
+		return binario;
+	}
+
 	public static void main(String[] args) {
 
-		String ip = "192.168.12.1";
-		String mascara = "/24";
-
-		String IpBinario = calcularIPBinario(ip);
-		String mascaraBinario = convertirMascaraBinario(mascara);
-
-		System.out.println(IpBinario);
-		System.out.println(mascaraBinario);
-		System.out.println(decimalAHexadecimal(11));
+//		String ip = "192.168.12.1";
+//		String mascara = "/24";
+//
+//		String IpBinario = calcularIPBinario(ip);
+//		String mascaraBinario = convertirMascaraBinario(mascara);
+//
+//		System.out.println(IpBinario);
+//		System.out.println(mascaraBinario);
+//		System.out.println(decimalAHexadecimal(11));
+		System.out.println(convertirHexaABinario("1bc"));
 	}
 }
