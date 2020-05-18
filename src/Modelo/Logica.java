@@ -1,5 +1,7 @@
 package Modelo;
 
+import java.util.Stack;
+
 public class Logica {
 
 	// Direccion IP
@@ -8,13 +10,18 @@ public class Logica {
 	// Mascara de la direccion IP
 	private String mascara;
 
+	public Logica(String ip, String mascara) {
+		this.ip = ip;
+		this.mascara = mascara;
+	}
+
 	/**
 	 * Permite convertir un numero decimal a binario
 	 * 
 	 * @param decimal numero a convertir
 	 * @return numero en binario
 	 */
-	public static String convertirDecimalABinarioManual(String decimal) {
+	public String convertirDecimalABinario(String decimal) {
 		int numero = Integer.parseInt(decimal);
 		if (numero <= 0) {
 			return "0";
@@ -41,13 +48,13 @@ public class Logica {
 	 * @param ip direccion ip
 	 * @return cadena con la direccion IP en binario
 	 */
-	public static String calcularIPBinario(String ip) {
+	public String calcularIPBinario(String ip) {
 		String[] ipArray = ip.split("\\.");
 		String binario = "";
 
 		if (ipArray.length != 0) {
 			for (int i = 0; i < ipArray.length; i++) {
-				binario += convertirDecimalABinarioManual(ipArray[i]) + ".";
+				binario += convertirDecimalABinario(ipArray[i]) + ".";
 			}
 		}
 		binario = binario.substring(0, binario.length() - 1);
@@ -61,7 +68,7 @@ public class Logica {
 	 * @param n2 segundo numero
 	 * @return
 	 */
-	public static String andBinario(String n1, String n2) {
+	public String andBinario(String n1, String n2) {
 
 		String resul = "";
 
@@ -82,7 +89,7 @@ public class Logica {
 	 * @param decimal numero decimal a convertir
 	 * @return numero hexadecimal (String)
 	 */
-	public static String decimalAHexadecimal(int decimal) {
+	public String decimalAHexadecimal(int decimal) {
 		String hexa = "";
 		String caracteresHexa = "0123456789abcdef";
 		while (decimal > 0) {
@@ -99,7 +106,7 @@ public class Logica {
 	 * @param mascara Mascara en decimal
 	 * @return Mascara en binario
 	 */
-	public static String convertirMascaraBinario(String mascara) {
+	public String convertirMascaraBinario(String mascara) {
 		mascara = mascara.substring(1, mascara.length());
 		int mascaraIp = Integer.parseInt(mascara);
 		StringBuilder binario = new StringBuilder();
@@ -114,7 +121,15 @@ public class Logica {
 				binario.insert(binario.length(), "0");
 			}
 		}
-		return binario.toString();
+
+		for (int i = 0; i < binario.length(); i++) {
+			if (i % 9 == 0) {
+				binario.insert(i, ".");
+			}
+		}
+		String binarioIP = binario.toString();
+		binarioIP = binarioIP.substring(1, binarioIP.length());
+		return binarioIP;
 	}
 
 	/**
@@ -123,23 +138,199 @@ public class Logica {
 	 * @param hexa numero hexadecimal
 	 * @return numero binario
 	 */
-	public static String convertirHexaABinario(String hexa) {
+	public String convertirHexaABinario(String hexa) {
 		int numHex = Integer.parseInt(hexa, 16);
 		String binario = Integer.toBinaryString(numHex);
 		return binario;
 	}
 
-	public static void main(String[] args) {
+	/**
+	 * Realizar la operacion and entre la ip y la mascara
+	 * 
+	 * @param ip      Direccion ip del host
+	 * @param mascara Mascara de la subred
+	 * @return la operacion and realizada
+	 */
+	public String realizarAnd(String ip, String mascara) {
+		String[] ipArray = ip.split("\\.");
+		String[] mascaraArray = mascara.split("\\.");
 
-//		String ip = "192.168.12.1";
-//		String mascara = "/24";
-//
-//		String IpBinario = calcularIPBinario(ip);
-//		String mascaraBinario = convertirMascaraBinario(mascara);
-//
-//		System.out.println(IpBinario);
-//		System.out.println(mascaraBinario);
-//		System.out.println(decimalAHexadecimal(11));
-		System.out.println(convertirHexaABinario("1bc"));
+		String and = "";
+
+		for (int i = 0; i < ipArray.length; i++) {
+			and += andBinario(ipArray[i], mascaraArray[i]) + ".";
+		}
+
+		and = and.substring(0, and.length() - 1);
+		return and;
+	}
+
+	/**
+	 * Convierte un numero binario a decimal
+	 * 
+	 * @param binario Numero binario a convertir
+	 * @return El numero binario convertido a decimal
+	 */
+	public int binarioADecimal(String binario) {
+		int decimal = 0;
+		int posicion = 0;
+		for (int x = binario.length() - 1; x >= 0; x--) {
+			short digito = 1;
+			if (binario.charAt(x) == '0') {
+				digito = 0;
+			}
+			double multiplicador = Math.pow(2, posicion);
+			decimal += digito * multiplicador;
+			posicion++;
+		}
+		return decimal;
+	}
+
+	/**
+	 * Convertir la direccion completa en binario a decimal
+	 * 
+	 * @param direccion Direccion a convertir a decimal
+	 * @return Direccion convertida a decimal
+	 */
+	public String convertirBinarioADecimal(String direccion) {
+		String[] array = direccion.split("\\.");
+
+		String decimal = "";
+
+		for (int i = 0; i < array.length; i++) {
+			decimal += binarioADecimal(array[i]) + ".";
+		}
+		decimal = decimal.substring(0, decimal.length() - 1);
+		return decimal;
+	}
+
+	/**
+	 * Metodo para calcular el numero de host en la red
+	 * 
+	 * @param mascara La direccion de la mascara en decimal
+	 * @return el numero de host en la red
+	 */
+	public int calcularNumerosHost(String mascara) {
+		String[] array = mascara.split("\\.");
+
+		int host = 0;
+		int con = 0;
+
+		for (int i = 0; i < array.length; i++) {
+			String cadena = array[i];
+			for (int j = 0; j < cadena.length(); j++) {
+				if (cadena.charAt(j) == '0') {
+					con++;
+				}
+			}
+		}
+
+		host = (int) Math.pow(2, con);
+		return host - 2;
+	}
+
+	/**
+	 * Metodo para calcular la direccion de broadcast de la red
+	 * 
+	 * @param and Operacion and de la direccion de red con la mascara
+	 * @param mascara Mascara de la subred
+	 * @return Direccion de broadcast de la red
+	 */
+	public String calcularDireccionBroadcast(String and, String mascara) {
+		StringBuilder broadcast = new StringBuilder();
+		mascara = mascara.substring(1, mascara.length());
+		int mascaraEntero = Integer.parseInt(mascara);
+
+		and = and.replaceAll("\\.", "");
+
+		char[] array = new char[and.length()];
+
+		for (int i = 0; i < array.length; i++) {
+			if (i > mascaraEntero - 1) {
+				array[i] = '1';
+			} else {
+				array[i] = and.charAt(i);
+			}
+		}
+
+		broadcast.append(array);
+
+		for (int i = 0; i < broadcast.length(); i++) {
+			if (i % 9 == 0) {
+				broadcast.insert(i, ".");
+			}
+		}
+
+		String binarioIP = broadcast.toString();
+		binarioIP = binarioIP.substring(1, binarioIP.length());
+
+		return binarioIP;
+	}
+
+	/**
+	 * Metodo para calcular la direccion minima asignable
+	 * 
+	 * @param direccion Direccion de la red
+	 * @return Direccion minima asignable
+	 */
+	public String calcularHostMinimo(String direccion) {
+		StringBuilder hostminimo = new StringBuilder();
+		String[] array = direccion.split("\\.");
+
+		for (int i = 0; i < array.length; i++) {
+			if (i == array.length - 1) {
+				int ultimo = Integer.parseInt(array[i]);
+				ultimo = ultimo + 1;
+				hostminimo.append(ultimo);
+				hostminimo.append(".");
+			} else {
+				hostminimo.append(array[i]);
+				hostminimo.append(".");
+			}
+		}
+
+		String minimo = hostminimo.toString();
+		minimo = minimo.substring(0, minimo.length()-1);
+
+		return minimo;
+	}
+	
+	public String calcularHostMaximo(String broadcast) {
+		StringBuilder hostmaximo = new StringBuilder();
+		String[] array = broadcast.split("\\.");
+
+		for (int i = 0; i < array.length; i++) {
+			if (i == array.length - 1) {
+				int ultimo = Integer.parseInt(array[i]);
+				ultimo = ultimo - 1;
+				hostmaximo.append(ultimo);
+				hostmaximo.append(".");
+			} else {
+				hostmaximo.append(array[i]);
+				hostmaximo.append(".");
+			}
+		}
+
+		String maximo = hostmaximo.toString();
+		maximo = maximo.substring(0, maximo.length()-1);
+
+		return maximo;
+	}
+
+	// Getters y Setters
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+	public String getMascara() {
+		return mascara;
+	}
+
+	public void setMascara(String mascara) {
+		this.mascara = mascara;
 	}
 }

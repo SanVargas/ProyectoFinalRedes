@@ -11,7 +11,7 @@ public class Principal extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("/Principal.fxml"));
+		loader.setLocation(getClass().getResource("/co/edu/uniquindio/redes/Principal.fxml"));
 		
 		Parent p = loader.load();
 		Scene s = new Scene(p);

@@ -1,6 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.PrincipalController" />
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="523.0" prefWidth="689.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.PrincipalController">
+   <children>
+      <TabPane prefHeight="531.0" prefWidth="696.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Calcular IP Host">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="14.0" layoutY="22.0" prefHeight="20.0" prefWidth="82.0" text="Direccion IP: " />
+                        <TextField fx:id="txtDireccionIP" layoutX="96.0" layoutY="20.0" prefHeight="25.0" prefWidth="205.0" />
+                        <Label layoutX="14.0" layoutY="73.0" prefHeight="17.0" prefWidth="113.0" text="Mascara de subred: " />
+                        <TextField fx:id="txtMascara" layoutX="127.0" layoutY="69.0" prefHeight="25.0" prefWidth="174.0" promptText="/xx" />
+                        <Label layoutX="14.0" layoutY="179.0" text="Direccion de la red: " />
+                        <Label fx:id="lblDirRed" layoutX="127.0" layoutY="179.0" prefHeight="17.0" prefWidth="546.0" />
+                        <Label layoutX="14.0" layoutY="214.0" text="Direccion de Broadcast: " />
+                        <Label fx:id="lblDirBroad" layoutX="142.0" layoutY="214.0" prefHeight="17.0" prefWidth="540.0" />
+                        <Label layoutX="14.0" layoutY="251.0" prefHeight="17.0" prefWidth="158.0" text="Cantidad de host en la red: " />
+                        <Label fx:id="lblCantidadHost" layoutX="172.0" layoutY="251.0" prefHeight="17.0" prefWidth="502.0" />
+                        <Label layoutX="14.0" layoutY="289.0" prefHeight="17.0" prefWidth="191.0" text="Rango de direccion IP asignables: " />
+                        <Button fx:id="btnCalcular" layoutX="135.0" layoutY="129.0" mnemonicParsing="false" onAction="#calcularDireccion" prefHeight="25.0" prefWidth="83.0" text="Calcular" />
+                        <Label layoutX="64.0" layoutY="342.0" text="Host Minimo Asignable: " />
+                        <Label fx:id="lblHostMin" layoutX="218.0" layoutY="342.0" prefHeight="17.0" prefWidth="433.0" />
+                        <Label layoutX="64.0" layoutY="394.0" text="Host Maximo Asignable: " />
+                        <Label fx:id="lblHostMax" layoutX="214.0" layoutY="394.0" prefHeight="17.0" prefWidth="452.0" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="Calcular IP Red">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+          <Tab text="Convertir Numeros Enteros">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
