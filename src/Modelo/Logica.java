@@ -270,7 +270,7 @@ public class Logica {
 	/**
 	 * Metodo para calcular la direccion minima asignable
 	 * 
-	 * @param direccion Direccion de la red
+	 * @param Direccion de la red
 	 * @return Direccion minima asignable
 	 */
 	public String calcularHostMinimo(String direccion) {
@@ -295,6 +295,12 @@ public class Logica {
 		return minimo;
 	}
 	
+	/**
+	 * Metodo para calcular la direccion maxima asignable
+	 * 
+	 * @param  Direccion de broadcast de la red
+	 * @return Direccion maxima asignable
+	 */
 	public String calcularHostMaximo(String broadcast) {
 		StringBuilder hostmaximo = new StringBuilder();
 		String[] array = broadcast.split("\\.");
