@@ -9,10 +9,16 @@ public class Logica {
 
 	// Mascara de la direccion IP
 	private String mascara;
+	
+	private String numero;
 
 	public Logica(String ip, String mascara) {
 		this.ip = ip;
 		this.mascara = mascara;
+	}
+	
+	public Logica(String numero) {
+		this.numero = numero;
 	}
 
 	/**
@@ -89,9 +95,10 @@ public class Logica {
 	 * @param decimal numero decimal a convertir
 	 * @return numero hexadecimal (String)
 	 */
-	public String decimalAHexadecimal(int decimal) {
+	public String decimalAHexadecimal(String numero) {
+		int decimal = Integer.parseInt(numero);
 		String hexa = "";
-		String caracteresHexa = "0123456789abcdef";
+		String caracteresHexa = "0123456789ABCDEF";
 		while (decimal > 0) {
 			int residuo = decimal % 16;
 			hexa = caracteresHexa.charAt(residuo) + hexa; // Agregar a la izquierda
@@ -232,7 +239,7 @@ public class Logica {
 	/**
 	 * Metodo para calcular la direccion de broadcast de la red
 	 * 
-	 * @param and Operacion and de la direccion de red con la mascara
+	 * @param and     Operacion and de la direccion de red con la mascara
 	 * @param mascara Mascara de la subred
 	 * @return Direccion de broadcast de la red
 	 */
@@ -290,15 +297,15 @@ public class Logica {
 		}
 
 		String minimo = hostminimo.toString();
-		minimo = minimo.substring(0, minimo.length()-1);
+		minimo = minimo.substring(0, minimo.length() - 1);
 
 		return minimo;
 	}
-	
+
 	/**
 	 * Metodo para calcular la direccion maxima asignable
 	 * 
-	 * @param  Direccion de broadcast de la red
+	 * @param Direccion de broadcast de la red
 	 * @return Direccion maxima asignable
 	 */
 	public String calcularHostMaximo(String broadcast) {
@@ -318,9 +325,95 @@ public class Logica {
 		}
 
 		String maximo = hostmaximo.toString();
-		maximo = maximo.substring(0, maximo.length()-1);
+		maximo = maximo.substring(0, maximo.length() - 1);
 
 		return maximo;
+	}
+
+	/**
+	 * Metodo Sobreescrito para convertir un numero binario a decimal
+	 * 
+	 * @param binario Numero binario a convertir
+	 * @return Numero convertido a decimal
+	 */
+	public int binarioADecimal(int binario) {
+		int decimal = 0;
+		int posicion = 0;
+		for (int x = String.valueOf(binario).length() - 1; x >= 0; x--) {
+			short digito = 1;
+			if (String.valueOf(binario).charAt(x) == '0') {
+				digito = 0;
+			}
+			double multiplicador = Math.pow(2, posicion);
+			decimal += digito * multiplicador;
+			posicion++;
+		}
+		return decimal;
+	}
+
+	/**
+	 * Metodo para convertir un numero binario a hexadecimal
+	 * 
+	 * @param numero Numero binario a convertir
+	 * @return Numero binario convertido a hexadecimal
+	 */
+	public String binarioAHexadecimal(String numero) {
+		int binario = Integer.parseInt(numero);
+		String hexadecimal = "";
+		String digitosHexa = "0123456789ABCDEF";
+
+		while (binario > 0) {
+			hexadecimal = digitosHexa.charAt((int) binarioADecimal(binario % 10000)) + hexadecimal;
+			binario = binario / 10000;
+		}
+
+		return hexadecimal;
+	}
+
+	/**
+	 * Metodo para convertir un caracter hexadecimal a decimal
+	 * 
+	 * @param caracter Caracter hexadecimal a convertir
+	 * @return Caracter convertido a decimal
+	 */
+	public int caracterHexadecimalADecimal(char caracter) {
+		switch (caracter) {
+		case 'A':
+			return 10;
+		case 'B':
+			return 11;
+		case 'C':
+			return 12;
+		case 'D':
+			return 13;
+		case 'E':
+			return 14;
+		case 'F':
+			return 15;
+		default:
+			return Integer.parseInt(String.valueOf(caracter));
+		}
+	}
+
+	/**
+	 * Metodo para convertir un numero hexadecimal a decimal
+	 * 
+	 * @param hexadecimal Numero hexadecimal a convertir a decimal
+	 * @return Numero hexadecimal convertido a decimal
+	 */
+	public long hexadecimalADecimal(String hexadecimal) {
+		long decimal = 0;
+
+		int potencia = 0;
+
+		for (int x = hexadecimal.length() - 1; x >= 0; x--) {
+			int valor = caracterHexadecimalADecimal(hexadecimal.charAt(x));
+			long elevado = (long) Math.pow(16, potencia) * valor;
+			decimal += elevado;
+
+			potencia++;
+		}
+		return decimal;
 	}
 
 	// Getters y Setters
@@ -338,5 +431,13 @@ public class Logica {
 
 	public void setMascara(String mascara) {
 		this.mascara = mascara;
+	}
+
+	public String getNumero() {
+		return numero;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
 	}
 }
