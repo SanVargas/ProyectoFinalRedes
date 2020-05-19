@@ -30,7 +30,7 @@ public class Logica {
 	public String convertirDecimalABinario(String decimal) {
 		int numero = Integer.parseInt(decimal);
 		if (numero <= 0) {
-			return "0";
+			return "00000000";
 		}
 		StringBuilder binario = new StringBuilder();
 		while (numero > 0) {
@@ -214,7 +214,7 @@ public class Logica {
 	/**
 	 * Metodo para calcular el numero de host en la red
 	 * 
-	 * @param mascara La direccion de la mascara en decimal
+	 * @param mascara La direccion de la mascara en binario
 	 * @return el numero de host en la red
 	 */
 	public int calcularNumerosHost(String mascara) {
