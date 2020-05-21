@@ -1,5 +1,7 @@
 package Pruebas;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 
 import Modelo.Logica;
@@ -248,5 +250,30 @@ public class Pruebas {
 		long decimal = logica.hexadecimalADecimal(hexadecimal);
 		
 		System.out.println(decimal);
+	}
+	
+	@Test
+	public void calcularNumeroDireccionesParaHostEnLaRed() {
+		String mascara = "/15";
+		
+		logica = new Logica(mascara);
+		
+		int host = logica.calcularNumeroDireccionesParaHostEnLaRed(mascara);
+		
+		System.out.println(host);
+	}
+	
+	@Test
+	public void calcularRangoDireccionesDirRedDirBroadcast() {
+		String direccion = "192.168.12.0";
+		String mascara = "/24";
+		
+		logica = new Logica(direccion, mascara);
+		
+		ArrayList<String> direcciones = logica.calcularRangoDireccionesDirRedDirBroadcast(direccion, mascara);
+		
+		for(int i=0; i < direcciones.size(); i++) {
+			System.out.println(direcciones.get(i));
+		}
 	}
 }

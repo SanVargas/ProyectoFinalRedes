@@ -1,5 +1,6 @@
 package Modelo;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 public class Logica {
@@ -9,14 +10,14 @@ public class Logica {
 
 	// Mascara de la direccion IP
 	private String mascara;
-	
+
 	private String numero;
 
 	public Logica(String ip, String mascara) {
 		this.ip = ip;
 		this.mascara = mascara;
 	}
-	
+
 	public Logica(String numero) {
 		this.numero = numero;
 	}
@@ -414,6 +415,142 @@ public class Logica {
 			potencia++;
 		}
 		return decimal;
+	}
+
+	/**
+	 * Permite calcular el numero de direcciones disponibles para los host de una
+	 * red
+	 * 
+	 * @param direccion direccion de la red
+	 * @return numero de direcciones disponibles
+	 */
+	public int calcularNumeroDireccionesParaHostEnLaRed(String mascara) {
+		String aux2 = mascara.substring(1, mascara.length());
+		;
+		int mascaraRed = Integer.parseInt(aux2);
+
+		int numBits = 32 - mascaraRed;
+		double numDirHost = Math.pow(2, numBits) - 2;
+		int direcciones = (int) numDirHost;
+
+		return direcciones;
+	}
+
+	/**
+	 * Permite calcular el rango de direcciones disponibles para una red partiendo
+	 * de la direccion IP
+	 * 
+	 * @param direccion direccion IP
+	 */
+	public ArrayList<String> calcularRangoDireccionesDirRedDirBroadcast(String direccion, String mascara) {
+		ArrayList<String> direcciones = new ArrayList<>();
+
+		String binarioMascara = convertirMascaraBinario(mascara);
+		String binarioIp = calcularIPBinario(direccion);
+		String and = realizarAnd(binarioIp, binarioMascara);
+
+		String broadcast = calcularDireccionBroadcast(and, mascara);
+
+		String p = "";
+		int k = and.length() - 1;
+		while (and.charAt(k) != '.') {
+			p += and.charAt(k);
+			k--;
+		}
+		String ad = convertirBinarioADecimal(and);
+
+		int contador = 0, m = 0;
+		String pri = "";
+		while (contador < 3) {
+			pri += and.charAt(m);
+			m++;
+			if (and.charAt(m) == '.')
+				contador++;
+		}
+
+		String[] startParts = convertirBinarioADecimal(and).split("\\.");
+		String[] endParts = convertirBinarioADecimal(broadcast).split("\\.");
+
+		int primeroOctetoRed = Integer.parseInt(startParts[0]);
+		int segundoOctetoRed = Integer.parseInt(startParts[1]);
+		int tercerOctetoRed = Integer.parseInt(startParts[2]);
+		int cuartoOctetoRed = Integer.parseInt(startParts[3]);
+
+		int primeroOctetoBroad = Integer.parseInt(endParts[0]);
+		int segundoOctetoBroad = Integer.parseInt(endParts[1]);
+		int tercerOctetoBroad = Integer.parseInt(endParts[2]);
+		int cuartoOctetoBroad = Integer.parseInt(endParts[3]);
+
+		direcciones.add(convertirBinarioADecimal(and) + " Direccion De Red");
+		while (!(primeroOctetoRed == primeroOctetoBroad && segundoOctetoRed == segundoOctetoBroad
+				&& tercerOctetoRed == tercerOctetoBroad && cuartoOctetoRed == cuartoOctetoBroad)) {
+			while (cuartoOctetoRed != cuartoOctetoBroad) {
+				cuartoOctetoRed += 1;
+				startParts[3] = cuartoOctetoRed + "";
+				String host = startParts[0] + "." + startParts[1] + "." + startParts[2] + "." + startParts[3];
+				direcciones.add(host);
+			}
+
+			while (tercerOctetoRed != tercerOctetoBroad) {
+				tercerOctetoRed += 1;
+				startParts[2] = tercerOctetoRed + "";
+				String host = startParts[0] + "." + startParts[1] + "." + startParts[2] + "." + startParts[3];
+				int cuartoOcteto = -1;
+				while (cuartoOcteto != 255) {
+					cuartoOcteto += 1;
+					startParts[3] = cuartoOcteto + "";
+					host = startParts[0] + "." + startParts[1] + "." + startParts[2] + "." + startParts[3];
+					direcciones.add(host);
+				}
+			}
+
+			while (segundoOctetoRed != segundoOctetoBroad) {
+				segundoOctetoRed += 1;
+				startParts[1] = segundoOctetoRed + "";
+				String host = startParts[0] + "." + startParts[1] + "." + startParts[2] + "." + startParts[3];
+				int tercerOcteto = -1;
+				while (tercerOcteto != tercerOctetoBroad) {
+					tercerOcteto += 1;
+					startParts[2] = tercerOcteto + "";
+					host = startParts[0] + "." + startParts[1] + "." + startParts[2] + "." + startParts[3];
+					int cuartoOcteto = -1;
+					while (cuartoOcteto != 255) {
+						cuartoOcteto += 1;
+						startParts[3] = cuartoOcteto + "";
+						host = startParts[0] + "." + startParts[1] + "." + startParts[2] + "." + startParts[3];
+						direcciones.add(host);
+					}
+				}
+			}
+
+			while (primeroOctetoRed != primeroOctetoBroad) {
+				primeroOctetoRed += 1;
+				startParts[1] = primeroOctetoRed + "";
+				String host = startParts[0] + "." + startParts[1] + "." + startParts[2] + "." + startParts[3];
+				int segundoOcteto = -1;
+				while (segundoOcteto != segundoOctetoBroad) {
+					segundoOcteto += 1;
+					startParts[1] = segundoOcteto + "";
+					host = startParts[0] + "." + startParts[1] + "." + startParts[2] + "." + startParts[3];
+					int tercerOcteto = -1;
+					while (tercerOcteto != tercerOctetoBroad) {
+						tercerOcteto += 1;
+						startParts[2] = tercerOcteto + "";
+						host = startParts[0] + "." + startParts[1] + "." + startParts[2] + "." + startParts[3];
+						int cuartoOcteto = -1;
+						while (cuartoOcteto != 255) {
+							cuartoOcteto += 1;
+							startParts[3] = cuartoOcteto + "";
+							host = startParts[0] + "." + startParts[1] + "." + startParts[2] + "." + startParts[3];
+							direcciones.add(host);
+						}
+					}
+				}
+			}
+		}
+		direcciones.remove(direcciones.size() - 1);
+		direcciones.add(convertirBinarioADecimal(broadcast) + " Direccion de Broadcast");
+		return direcciones;
 	}
 
 	// Getters y Setters
